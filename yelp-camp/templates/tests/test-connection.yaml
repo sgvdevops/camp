@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "yelp-camp.fullname" . }}-test-connection"
+  labels:
+    {{- include "yelp-camp.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "yelp-camp.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
